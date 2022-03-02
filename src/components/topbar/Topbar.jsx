@@ -1,6 +1,6 @@
 import "./topbar.css";
 import { Search, Chat, Person, Notifications } from "@material-ui/icons";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 const Topbar = () => {
@@ -45,16 +45,17 @@ const Topbar = () => {
 
         <span className="topBarIconBadge">3</span>
       </div>
-
-      <img
-        src={
-          user.profilePicture
-            ? PF + user.profilePicture
-            : "assets/person/noprofile.jpg"
-        }
-        alt=""
-        className="topBarImg"
-      />
+      <Link to={`profile/${user.username}`}>
+        <img
+          src={
+            user.profilePicture
+              ? PF + user.profilePicture
+              : "assets/person/noprofile.jpg"
+          }
+          alt=""
+          className="topBarImg"
+        />
+      </Link>
     </div>
   );
 };
