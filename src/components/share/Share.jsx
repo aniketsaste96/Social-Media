@@ -17,6 +17,21 @@ const Share = () => {
       userId: user._id,
       desc: desc.current.value,
     };
+
+    if (file) {
+      const data = new FormData();
+      //other users may alos upload file with same name so to avoid conflict
+      const fileName = Date.now() + file.name;
+      data.append("file", file);
+      data.append("name");
+      newPost.img = fileName;
+      try {
+        await axios.post("/upload", data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
     try {
       await axios.post("/posts", newPost);
     } catch (error) {}
