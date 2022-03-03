@@ -1,4 +1,5 @@
 import "./post.css";
+import React from "react";
 import { MoreVert, ThumbUpAlt, Favorite } from "@material-ui/icons";
 import axios from "axios";
 import { useState, useEffect, useContext } from "react";

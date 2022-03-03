@@ -1,5 +1,5 @@
 //import create context from react 
-import { createContext, useReducer } from "react";
+import React, { createContext, useReducer } from "react";
 import AuthReducer from "./AuthReducer"
 const INITIAL_STATE = {
     //initial state before log in

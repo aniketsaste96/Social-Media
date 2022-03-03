@@ -1,4 +1,5 @@
 import "./login.css";
+import React from "react";
 import { useHistory } from "react-router-dom";
 import { useRef, useContext } from "react";
 import { loginCall } from "../../apiCalls";
@@ -11,7 +12,7 @@ const Login = () => {
   const password = useRef();
 
   //conext hook
-  const { user, isFetching, dispatch, error } = useContext(AuthContext);
+  const { user, isFetching, dispatch } = useContext(AuthContext);
 
   //on submit logic
 

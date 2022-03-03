@@ -1,7 +1,7 @@
 import "./rightbar.css";
 import { Users } from "../../DummyData";
 import Online from "../online/Online";
-
+import React from "react";
 function Rightbar({ user }) {
   const HomeRightBar = () => {
     return (

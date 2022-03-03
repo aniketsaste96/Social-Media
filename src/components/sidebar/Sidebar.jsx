@@ -1,4 +1,5 @@
 import "./sidebar.css";
+import React from "react";
 import CloseFriends from "../closeFriends/CloseFriends";
 import {
   RssFeed,

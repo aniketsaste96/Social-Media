@@ -1,8 +1,9 @@
 import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
+import React from "react";
 import Register from "./pages/register/Register";
 import Profile from "./pages/profile/Profile";
-import { BrowserRouter, Route, Link, Switch, Redirect } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import { useContext } from "react"
 import { AuthContext } from "./context/AuthContext"
 

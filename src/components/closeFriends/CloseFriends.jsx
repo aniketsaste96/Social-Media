@@ -1,5 +1,5 @@
 import React from "react";
-import { Users } from "../../DummyData";
+// import { Users } from "../../DummyData";
 const CloseFriends = ({ user }) => {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   return (

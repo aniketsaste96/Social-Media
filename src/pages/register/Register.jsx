@@ -1,6 +1,7 @@
 import "./register.css";
 import { useHistory } from "react-router-dom";
 import { useRef } from "react";
+import React from "react";
 import axios from "axios";
 const Register = () => {
   const history = useHistory();

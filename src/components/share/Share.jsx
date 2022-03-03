@@ -1,4 +1,5 @@
 import "./share.css";
+import React from "react";
 import { PermMedia, Label, Room, EmojiEmotions } from "@material-ui/icons";
 import { useContext, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
@@ -10,33 +11,34 @@ const Share = () => {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const desc = useRef();
   const [file, setFile] = useState(null);
+
   const { user } = useContext(AuthContext);
+
   const submitHandler = async (e) => {
     e.preventDefault();
     const newPost = {
       userId: user._id,
       desc: desc.current.value,
     };
-
     if (file) {
       const data = new FormData();
-      //other users may alos upload file with same name so to avoid conflict
       const fileName = Date.now() + file.name;
+      data.append("name", fileName);
       data.append("file", file);
-      data.append("name");
       newPost.img = fileName;
+      console.log(newPost);
+
       try {
         await axios.post("/upload", data);
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (err) {}
     }
-
     try {
       await axios.post("/posts", newPost);
-    } catch (error) {}
+      // window.location.reload();
+    } catch (err) {}
   };
 
+  // http://localhost:8800/images/person/noprofile.jpg
   return (
     <div className="share">
       <div className="shareWrapper">
@@ -51,7 +53,7 @@ const Share = () => {
             alt=""
           />
           <input
-            placeholder={"What's in your mind" + " " + user.username + "?"}
+            placeholder={"What's in your mind " + user.username + "?"}
             className="shareInput"
             ref={desc}
           />
