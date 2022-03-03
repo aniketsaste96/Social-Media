@@ -1,11 +1,11 @@
 import "./post.css";
 import { MoreVert, ThumbUpAlt, Favorite } from "@material-ui/icons";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 //using timeago.js package
 import { format } from "timeago.js";
-
+import { AuthContext } from "../../context/AuthContext";
 //post data comming from feed
 
 const Post = ({ post }) => {
@@ -14,11 +14,16 @@ const Post = ({ post }) => {
   const [like, setLike] = useState(post.likes.length);
   const [isliked, setIsLiked] = useState(false);
   const [color, setColor] = useState("grey");
+  const { user } = useContext(AuthContext);
 
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
   //increse like if not liked and reduce if already liked
   const likeHandler = () => {
+    //SEND LIKES AND DISLIKES TO BACKEND
+    try {
+      axios.put("/posts/" + post._id + "/like", { userId: user._id });
+    } catch (error) {}
     setLike(isliked ? like - 1 : like + 1);
     setIsLiked(!isliked);
     //logic for if like make icon blue if not make it grey
@@ -29,6 +34,11 @@ const Post = ({ post }) => {
     }
   };
 
+  // if alreday liked by same use or not
+  useEffect(() => {
+    setIsLiked(post.likes.includes(user._id));
+  }, [user._id, post.likes]);
+
   useEffect(() => {
     const fetchUser = async () => {
       const res = await axios.get(`/users?userId=${post.userId}`);
@@ -36,6 +46,7 @@ const Post = ({ post }) => {
     };
     fetchUser();
   }, [post.userId]);
+
   console.log(users);
   return (
     <div className="post">
@@ -44,7 +55,11 @@ const Post = ({ post }) => {
           <div className="postTopLeft">
             <Link to={`profile/${users.username}`}>
               <img
-                src={users.profilePicture || PF + "person/noprofile.jpg"}
+                src={
+                  users.profilePicture
+                    ? PF + users.profilePicture
+                    : PF + "person/noprofile.jpg"
+                }
                 className="postPrfileImg"
                 alt=""
               />
