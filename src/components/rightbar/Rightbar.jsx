@@ -10,7 +10,7 @@ import { Add, Remove } from "@material-ui/icons";
 
 function Rightbar({ user }) {
   const [friends, setFriends] = useState([]);
-  const { user: currentUser } = useContext(AuthContext);
+  const { user: currentUser, dispatch } = useContext(AuthContext);
   const [followed, setFollowed] = useState(false);
 
   useEffect(() => {
@@ -33,15 +33,24 @@ function Rightbar({ user }) {
     getFriendList();
   }, [user]);
   //follow locgic
-
-  const handleClick = () => {
+  //unfollow when already followed vice versa
+  const handleClick = async () => {
     try {
       if (followed) {
-        await axios.put("/users/" + user._id + "/follow");
+        await axios.put("/users/" + user._id + "/unfollow", {
+          userId: currentUser._id,
+        });
+        dispatch({ type: "UNFOLLOW", payload: user._id });
       } else {
-        await axios.put("/users/" + user._id + "/unfollow");
+        await axios.put("/users/" + user._id + "/follow", {
+          userId: currentUser._id,
+        });
+        dispatch({ type: "FOLLOW", payload: user._id });
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
+    setFollowed(!followed);
   };
 
   const HomeRightBar = () => {

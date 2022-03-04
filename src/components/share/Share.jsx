@@ -1,6 +1,12 @@
 import "./share.css";
 import React from "react";
-import { PermMedia, Label, Room, EmojiEmotions } from "@material-ui/icons";
+import {
+  PermMedia,
+  Label,
+  Room,
+  EmojiEmotions,
+  Cancel,
+} from "@material-ui/icons";
 import { useContext, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
@@ -59,6 +65,23 @@ const Share = () => {
           />
         </div>
         <hr className="shareHR" />
+        {
+          //show selected file before upload(share)
+          file && (
+            <div className="shareImgContainer">
+              <img
+                src={URL.createObjectURL(file)}
+                className="shareImg"
+                alt=""
+              />
+              {/* createObjectURL allow us to create pseudo url so we can see it before upload */}
+              <Cancel
+                className="shareCancelImg"
+                onClick={() => setFile(null)}
+              />
+            </div>
+          )
+        }
         <form className="shareBottom" onSubmit={submitHandler}>
           <div className="shareOptions">
             <label htmlFor="file" className="shareOption">

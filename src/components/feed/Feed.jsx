@@ -30,7 +30,7 @@ const Feed = ({ username }) => {
     <div className="feed">
       <div className="feedWrapper">
         {/* username === user.username && then only i can see the share */}
-        {username === user.username && <Share />}
+        {(!username || username === user.username) && <Share />}
         {/* dummy data using map */}
 
         {posts.map((p) => {
