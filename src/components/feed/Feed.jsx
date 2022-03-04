@@ -29,8 +29,10 @@ const Feed = ({ username }) => {
   return (
     <div className="feed">
       <div className="feedWrapper">
-        <Share />
+        {/* username === user.username && then only i can see the share */}
+        {username === user.username && <Share />}
         {/* dummy data using map */}
+
         {posts.map((p) => {
           return <Post key={p._id} post={p} />;
         })}

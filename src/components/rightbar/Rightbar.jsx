@@ -1,8 +1,49 @@
 import "./rightbar.css";
 import { Users } from "../../DummyData";
 import Online from "../online/Online";
+import { useContext, useEffect, useState } from "react";
 import React from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
+import { Add, Remove } from "@material-ui/icons";
+
 function Rightbar({ user }) {
+  const [friends, setFriends] = useState([]);
+  const { user: currentUser } = useContext(AuthContext);
+  const [followed, setFollowed] = useState(false);
+
+  useEffect(() => {
+    setFollowed(currentUser.followers.includes(user?.id));
+  }, [currentUser, user]);
+
+  useEffect(() => {
+    //we cannot use async useEffect so use inside it with creating new function adn calling it inside
+    const getFriendList = async () => {
+      try {
+        const friendList = await axios.get("/users/friends/" + user._id);
+        //we just need data from response
+        setFriends(friendList.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    // calling function
+    getFriendList();
+  }, [user]);
+  //follow locgic
+
+  const handleClick = () => {
+    try {
+      if (followed) {
+        await axios.put("/users/" + user._id + "/follow");
+      } else {
+        await axios.put("/users/" + user._id + "/unfollow");
+      }
+    } catch (error) {}
+  };
+
   const HomeRightBar = () => {
     return (
       <>
@@ -28,6 +69,12 @@ function Rightbar({ user }) {
 
     return (
       <>
+        {user.username !== currentUser.username && (
+          <button className="rightBarFollowButton" onClick={handleClick}>
+            {followed ? "unFollow" : "Follow"}
+            {followed ? <Remove /> : <Add />}
+          </button>
+        )}
         <h4 className="rightbarTitle">User Information</h4>
         <div className="rightbarInfo">
           <div className="rightbarInfoItem">
@@ -52,70 +99,26 @@ function Rightbar({ user }) {
         </div>
         <h4 className="rightbarTitle">User Friends</h4>
         <div className="rightbarFollowings">
-          <div className="rightbarFollowing">
-            <img
-              src={`${PF}/person/1.jpg`}
-              alt=""
-              className="righbarfollowingImg"
-            />
-            <span className="rightbarFollowingN">Aniket Saste</span>
-          </div>
-          <div className="rightbarFollowing">
-            <img
-              src={`${PF}/person/1.jpg`}
-              alt=""
-              className="righbarfollowingImg"
-            />
-            <span className="rightbarFollowingN">Aniket Saste</span>
-          </div>
-          <div className="rightbarFollowing">
-            <img
-              src={`${PF}/person/1.jpg`}
-              alt=""
-              className="righbarfollowingImg"
-            />
-            <span className="rightbarFollowingN">Aniket Saste</span>
-          </div>
-          <div className="rightbarFollowing">
-            <img
-              src={`${PF}/person/1.jpg`}
-              alt=""
-              className="righbarfollowingImg"
-            />
-            <span className="rightbarFollowingN">Aniket Saste</span>
-          </div>
-          <div className="rightbarFollowing">
-            <img
-              src={`${PF}/person/1.jpg`}
-              alt=""
-              className="righbarfollowingImg"
-            />
-            <span className="rightbarFollowingN">Aniket Saste</span>
-          </div>
-          <div className="rightbarFollowing">
-            <img
-              src={`${PF}/person/1.jpg`}
-              alt=""
-              className="righbarfollowingImg"
-            />
-            <span className="rightbarFollowingN">Aniket Saste</span>
-          </div>
-          <div className="rightbarFollowing">
-            <img
-              src={`${PF}/person/1.jpg`}
-              alt=""
-              className="righbarfollowingImg"
-            />
-            <span className="rightbarFollowingN">Aniket Saste</span>
-          </div>
-          <div className="rightbarFollowing">
-            <img
-              src={`${PF}/person/1.jpg`}
-              alt=""
-              className="righbarfollowingImg"
-            />
-            <span className="rightbarFollowingN">Aniket Saste</span>
-          </div>
+          {/* go to individula page with usename */}
+          {friends.map((friend) => (
+            <Link
+              to={"/profile/" + friend.username}
+              style={{ textDecoration: "none", textAlign: "center" }}
+            >
+              <div className="rightbarFollowing">
+                <img
+                  src={
+                    friend.profilePicture
+                      ? PF + friend.profilePicture
+                      : PF + "person/noprofile.jpg"
+                  }
+                  alt=""
+                  className="righbarfollowingImg"
+                />
+                <span className="rightbarFollowingN">{friend.username}</span>
+              </div>
+            </Link>
+          ))}
         </div>
       </>
     );
