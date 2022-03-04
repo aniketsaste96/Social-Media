@@ -25,7 +25,7 @@ const Login = () => {
       dispatch
     );
   };
-  console.log(user);
+  // console.log(user);
   const history = useHistory();
   return (
     <div className="login">
