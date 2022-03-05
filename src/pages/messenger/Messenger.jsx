@@ -3,6 +3,7 @@ import "./messenger.css";
 import Topbar from "../../components/topbar/Topbar";
 import Conversation from "../../components/conversation/Conversation";
 import Message from "../../components/message/Message";
+import ChatOnline from "../../components/chatOnline/ChatOnline";
 const Messenger = () => {
   return (
     <>
@@ -29,6 +30,12 @@ const Messenger = () => {
               <Message />
               <Message own={true} />
               <Message />
+              <Message />
+              <Message />
+              <Message />
+              <Message />
+              <Message />
+              <Message />
               <Message own={true} />
             </div>
             <div className="chatBoxBottom">
@@ -36,11 +43,14 @@ const Messenger = () => {
                 placeholder="Start Conversation...."
                 className="chatMessageInput"
               ></textarea>
+              <button className="chtaSubmitButton">Send</button>
             </div>
           </div>
         </div>
         <div className="chatOnline">
-          <div className="chatOnlineWrapper">sdv</div>
+          <div className="chatOnlineWrapper">
+            <ChatOnline />
+          </div>
         </div>
       </div>
     </>
