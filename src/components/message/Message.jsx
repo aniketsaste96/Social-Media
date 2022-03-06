@@ -1,6 +1,7 @@
 import React from "react";
 import "./message.css";
-const Message = ({ own }) => {
+import { format } from "timeago.js";
+const Message = ({ message, own }) => {
   return (
     <>
       <div className={own ? "message own" : "message"}>
@@ -10,9 +11,9 @@ const Message = ({ own }) => {
             src="http://getwallpapers.com/wallpaper/full/9/7/9/566755.jpg"
             alt=""
           />
-          <p className="messageText">Hello this is message Lorem,</p>
+          <p className="messageText">{message.text}</p>
         </div>
-        <div className="messageBottom">1 hour ago</div>
+        <div className="messageBottom">{format(message.createdAt)}</div>
       </div>
     </>
   );
