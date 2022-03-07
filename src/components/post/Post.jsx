@@ -14,6 +14,9 @@ const Post = ({ post }) => {
   //LIKES(array WHICH INCLUDE userId) COMMING FROM DB
   const [like, setLike] = useState(post.likes.length);
   const [isliked, setIsLiked] = useState(false);
+  const [comments, setComments] = useState(false);
+  const [iscomments, setIsComments] = useState("");
+  const [dbcomments, setDBComments] = useState("");
   const [color, setColor] = useState("grey");
   const { user } = useContext(AuthContext);
 
@@ -48,7 +51,43 @@ const Post = ({ post }) => {
     fetchUser();
   }, [post.userId]);
 
-  console.log(users);
+  //comments
+  const commentHandler = () => {
+    setComments(true);
+    setComments(!comments);
+  };
+
+  //get comments from database
+  //now fetch comments
+  useEffect(() => {
+    const getComments = async () => {
+      try {
+        const res = await axios.get("/comments/6216244cea30e686ed61ec29");
+        setDBComments(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getComments();
+  }, [iscomments]);
+
+  console.log(dbcomments);
+  //comment to data base
+  const sendCommentHandle = async (e) => {
+    e.preventDefault();
+
+    const Newcomment = {
+      sender: user._id,
+      text: iscomments,
+      postId: post._id,
+    };
+    try {
+      await axios.post("/comments", Newcomment);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  console.log(iscomments);
   return (
     <div className="post">
       <div className="postWrapper">
@@ -91,10 +130,44 @@ const Post = ({ post }) => {
             <span className="postLikeCounter">{like}</span>
           </div>
           <div className="postBottomRight">
-            <span className="postCommentText">{post.comment} comments</span>
+            <span className="postCommentText" onClick={commentHandler}>
+              {post.comments} comments
+            </span>
           </div>
         </div>
       </div>
+
+      {comments === true ? (
+        <>
+          <div className="commentBox">
+            <div className="commentBoxWrapper">
+              {dbcomments.map((comment) => (
+                <div className="actualComment">
+                  <img
+                    className="UserCommentImg"
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHu7B79KjMjVI4_iIOLgvuVQiN-bh3z1dV8g&usqp=CAU"
+                    alt=""
+                  />
+                  <span>Prasad</span>
+                  <span className="UserComment">{comment.text} </span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="NewCommentBox">
+            <textarea
+              placeholder="Comment..."
+              className="newCommentBoxArea"
+              onChange={(e) => setIsComments(e.target.value)}
+            ></textarea>
+            <button className="commentButton" onClick={sendCommentHandle}>
+              Send
+            </button>
+          </div>
+        </>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

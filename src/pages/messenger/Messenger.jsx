@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import "./messenger.css";
 import Topbar from "../../components/topbar/Topbar";
 import axios from "axios";
@@ -6,13 +6,33 @@ import Conversation from "../../components/conversation/Conversation";
 import Message from "../../components/message/Message";
 import ChatOnline from "../../components/chatOnline/ChatOnline";
 import { AuthContext } from "../../context/AuthContext";
+import { io } from "socket.io-client";
 const Messenger = () => {
   const { user } = useContext(AuthContext);
 
   const [convsersation, setConvsersation] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
+
   const [newMessages, setNewMessages] = useState("");
+  const socket = useRef();
+
+  useEffect(() => {
+    socket.current = io("ws://localhost:8900");
+  }, []);
+
+  //socket connection
+  useEffect(() => {
+    socket.current.emit("addUser", user._id);
+    //addUser is event name
+    socket.current.on("getUsers", (users) => {
+      console.log(users);
+    });
+  }, [user]);
+
+  //to see latest message
+
+  const scrollRef = useRef();
 
   useEffect(() => {
     const getConversations = async () => {
@@ -25,7 +45,6 @@ const Messenger = () => {
     };
     getConversations();
   }, [user._id]);
-  console.log(currentChat);
 
   //now fetch messages
   useEffect(() => {
@@ -39,7 +58,6 @@ const Messenger = () => {
     };
     getMessages();
   }, [currentChat]);
-  console.log(messages);
 
   //send message logic
 
@@ -53,14 +71,22 @@ const Messenger = () => {
     try {
       const res = await axios.post("/messages", message);
       setMessages([...messages, res.data]);
+      setNewMessages("");
     } catch (error) {
       console.log(error);
     }
   };
   console.log(...messages);
+
+  //scroll
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behaviour: "smooth" });
+  }, [messages]);
+
   return (
     <>
-      {/* <Topbar /> */}
+      <Topbar />
       <div className="messenger">
         <div className="chatMenu">
           <div className="chatMenuWrapper">
@@ -81,7 +107,9 @@ const Messenger = () => {
               <>
                 <div className="chatBoxTop">
                   {messages.map((m) => (
-                    <Message message={m} own={m.sender === user._id} />
+                    <div ref={scrollRef}>
+                      <Message message={m} own={m.sender === user._id} />
+                    </div>
                   ))}
                 </div>
                 <div className="chatBoxBottom">

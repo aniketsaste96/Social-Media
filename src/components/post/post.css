@@ -75,3 +75,53 @@
   font-size: 15px;
 }
 
+.commentBox {
+  border-top: 2px dashed grey;
+
+  width: 100%;
+  height: 200px;
+}
+.actualComment {
+  display: flex;
+  align-items: center;
+}
+.UserCommentImg {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.UserComment {
+  margin-top: 30px;
+  margin-left: 20px;
+  font-size: 15px;
+  font-weight: 300;
+  border: 2px solid black;
+}
+.commentBoxWrapper {
+  padding: 5px;
+}
+.NewCommentBox {
+  align-self: center;
+  width: 90%;
+  margin: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.newCommentBoxArea {
+  height: 40px;
+  width: 100%;
+}
+.commentButton {
+  border: none;
+  background-color: teal;
+  color: white;
+  cursor: pointer;
+  margin-left: 20px;
+  height: 20px;
+  width: 40px;
+  border-radius: 5px;
+}
