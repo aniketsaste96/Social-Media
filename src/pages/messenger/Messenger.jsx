@@ -7,32 +7,45 @@ import Message from "../../components/message/Message";
 import ChatOnline from "../../components/chatOnline/ChatOnline";
 import { AuthContext } from "../../context/AuthContext";
 import { io } from "socket.io-client";
+
 const Messenger = () => {
   const { user } = useContext(AuthContext);
-
   const [convsersation, setConvsersation] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
-
+  const [arrivalMessage, setArrivalMessage] = useState(null);
+  const [onlineUsers, setOnlineUsers] = useState([]);
+  const scrollRef = useRef();
   const [newMessages, setNewMessages] = useState("");
   const socket = useRef();
 
   useEffect(() => {
     socket.current = io("ws://localhost:8900");
+    socket.current.on("getMessage", (data) => {
+      setArrivalMessage({
+        sender: data.senderId,
+        text: data.text,
+        createdAt: Date.now(),
+      });
+    });
   }, []);
+
+  useEffect(() => {
+    arrivalMessage &&
+      currentChat?.members.includes(arrivalMessage.sender) &&
+      setMessages((prev) => [...prev, arrivalMessage]);
+  }, [arrivalMessage, currentChat]);
 
   //socket connection
   useEffect(() => {
     socket.current.emit("addUser", user._id);
     //addUser is event name
     socket.current.on("getUsers", (users) => {
-      console.log(users);
+      setOnlineUsers(users);
     });
   }, [user]);
 
   //to see latest message
-
-  const scrollRef = useRef();
 
   useEffect(() => {
     const getConversations = async () => {
@@ -76,7 +89,17 @@ const Messenger = () => {
       console.log(error);
     }
   };
-  console.log(...messages);
+
+  console.log("rec Id", convsersation);
+  //find reciverId
+  // const receiverId = currentChat.members?.find((member) => member !== user._id);
+
+  //emit when sending something
+  // socket.current.emit("sendMessage", {
+  //   senderId: user._id,
+  //   // receiverId,
+  //   text: newMessages,
+  // });
 
   //scroll
 
@@ -133,7 +156,11 @@ const Messenger = () => {
         </div>
         <div className="chatOnline">
           <div className="chatOnlineWrapper">
-            <ChatOnline />
+            <ChatOnline
+              onlineUsers={onlineUsers}
+              currentId={user._id}
+              setCurrentChat={setCurrentChat}
+            />
           </div>
         </div>
       </div>

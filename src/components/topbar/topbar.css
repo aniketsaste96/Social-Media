@@ -63,7 +63,7 @@
 .topbarRightLink {
   display: flex;
   cursor: pointer;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .topbarIconItem {

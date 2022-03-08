@@ -34,7 +34,7 @@ const Register = () => {
     <div className="login">
       <div className="loginWrapper">
         <div className="loginLeft">
-          <h3 className="loginLogo">AniketSocial</h3>
+          <h3 className="loginLogo">SocialMedia</h3>
           <span className="loginDesc"> "Connect With world" </span>
         </div>
         <form onSubmit={handleSubmit} className="loginRight">

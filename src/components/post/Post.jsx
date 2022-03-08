@@ -14,7 +14,7 @@ const Post = ({ post }) => {
   //LIKES(array WHICH INCLUDE userId) COMMING FROM DB
   const [like, setLike] = useState(post.likes.length);
   const [isliked, setIsLiked] = useState(false);
-  const [comments, setComments] = useState(false);
+  const [show, setShow] = useState(false);
   const [iscomments, setIsComments] = useState("");
   const [dbcomments, setDBComments] = useState("");
   const [color, setColor] = useState("grey");
@@ -53,8 +53,8 @@ const Post = ({ post }) => {
 
   //comments
   const commentHandler = () => {
-    setComments(true);
-    setComments(!comments);
+    setShow(true);
+    setShow(!show);
   };
 
   //get comments from database
@@ -79,7 +79,7 @@ const Post = ({ post }) => {
     const Newcomment = {
       sender: user._id,
       text: iscomments,
-      postId: post._id,
+      commentId: post._id,
     };
     try {
       await axios.post("/comments", Newcomment);
@@ -137,20 +137,29 @@ const Post = ({ post }) => {
         </div>
       </div>
 
-      {comments === true ? (
+      {show === true ? (
         <>
           <div className="commentBox">
             <div className="commentBoxWrapper">
               {dbcomments.map((comment) => (
-                <div className="actualComment">
-                  <img
-                    className="UserCommentImg"
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHu7B79KjMjVI4_iIOLgvuVQiN-bh3z1dV8g&usqp=CAU"
-                    alt=""
-                  />
-                  <span>Prasad</span>
-                  <span className="UserComment">{comment.text} </span>
-                </div>
+                <>
+                  <div className="actualComment">
+                    <img
+                      className="UserCommentImg"
+                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHu7B79KjMjVI4_iIOLgvuVQiN-bh3z1dV8g&usqp=CAU"
+                      alt=""
+                    />
+                    <div className="commentBottom">
+                      <span>Prasad</span>
+                      <div className="UserComment">
+                        {comment.text}
+                        <span className="UserCommentTime">
+                          {format(post.createdAt)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </>
               ))}
             </div>
           </div>

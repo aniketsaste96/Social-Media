@@ -3,6 +3,7 @@ import Login from "./pages/login/Login";
 import React from "react";
 import Register from "./pages/register/Register";
 import Profile from "./pages/profile/Profile";
+import Charts from "./components/charts/BarChart";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { useContext } from "react"
 import { AuthContext } from "./context/AuthContext"
@@ -27,6 +28,9 @@ function App() {
         </Route>
         <Route path="/messenger">
           <Messenger />
+        </Route>
+        <Route exact path="/charts">
+          <Charts />
 
         </Route>
         <Route path="/profile/:username">

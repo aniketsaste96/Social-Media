@@ -1,22 +1,11 @@
 //import create context from react 
-import React, { createContext, useReducer } from "react";
+import React, { createContext, useReducer, useEffect } from "react";
 import AuthReducer from "./AuthReducer"
 const INITIAL_STATE = {
     //initial state before log in
-    user: {
-        _id: "6214dc916b92e34b7bc0b64b",
-        username: "neha",
-        email: "neha@gmail.com",
-        profilePicture: "",
-        coverPicture: "",
-        followers: []
-
-
-
-
-    },
+    user: JSON.parse(localStorage.getItem("user")) || null,
     isFetching: false,
-    error: false
+    error: false,
 };
 
 export const AuthContext = createContext(INITIAL_STATE);
@@ -27,7 +16,9 @@ export const AuthContext = createContext(INITIAL_STATE);
 //in index.js we wrapped app with this Provider so we can acces these values in whole app
 export const AuthContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(AuthReducer, INITIAL_STATE);
-
+    useEffect(() => {
+        localStorage.setItem("user", JSON.stringify(state.user))
+    }, [state.user])
     return (
         <AuthContext.Provider value={{
             user: state.user,

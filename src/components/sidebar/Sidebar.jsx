@@ -1,5 +1,6 @@
 import "./sidebar.css";
 import React from "react";
+import { useHistory } from "react-router-dom";
 import CloseFriends from "../closeFriends/CloseFriends";
 import {
   RssFeed,
@@ -13,13 +14,19 @@ import {
 } from "@material-ui/icons";
 import { Users } from "../../DummyData";
 const Sidebar = () => {
+  const history = useHistory();
   return (
     <div className="sidebar">
       <div className="sidebarWrapper">
         <ul className="sidebarList">
           <li className="listItems">
             <RssFeed className="sideBarIcon" />
-            <span className="sidebarIcons">Feed</span>
+            <span
+              className="sidebarIcons"
+              onClick={() => history.push("/charts")}
+            >
+              Charts Analysis
+            </span>
           </li>
           <li className="listItems">
             <Chat className="sideBarIcon" />
