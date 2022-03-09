@@ -1,3 +1,5 @@
+//****its good practice to seperate files than mixing up
+
 export const LoginStart = (userCredentials) => ({
     type: "LOGIN_START"
     //here only login no any payload
