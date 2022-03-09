@@ -1,6 +1,7 @@
 import React from "react";
 import "./charts.css";
-import { Pdata } from "./chartData.js";
+import axios from "axios";
+import { Pdata, Radardata, RadarData2 } from "./chartData";
 import {
   ResponsiveContainer,
   LineChart,
@@ -10,9 +11,20 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  AreaChart,
+  RadarChart,
+  PolarAngleAxis,
+  Area,
+  PolarGrid,
+  PolarRadiusAxis,
+  Radar,
 } from "recharts";
 
 const BarChart = () => {
+  //fetch data from db
+
+  // const datas = axios.get()
+
   return (
     <>
       <div className="chart">
@@ -25,19 +37,50 @@ const BarChart = () => {
             margin={{ right: 20, left: 20 }}
           >
             <CartesianGrid strokeDasharray="3 3" />
-            <Tooltip />
+            <Tooltip contentStyle={{ backgroundColor: "yellow" }} />
             <Legend />
 
+            <XAxis
+              dataKey="Month"
+              interval={"preserveStartEnd"}
+              tickFormatter={(value) => value + " (Active Users)"}
+            />
+            <YAxis />
             <Line
               type="monotone"
               dataKey="users"
-              stroke="#8884d8"
+              stroke="red"
               activeDot={{ r: 8 }}
             />
-            <XAxis dataKey="Month" interval={"preserveStartEnd"} />
-            <YAxis />
-            <Line dataKey="posts" />
+            <Line dataKey="posts" stroke="green" activeDot={{ r: 8 }} />
           </LineChart>
+        </ResponsiveContainer>
+      </div>
+      <hr className="chartHr" />
+      <h1 className="charHeading">Numbers of Hours spend Online</h1>
+
+      <div style={{ width: "100%", height: 400 }}>
+        <ResponsiveContainer>
+          <AreaChart
+            data={Radardata}
+            margin={{
+              top: 10,
+              right: 30,
+              left: 0,
+              bottom: 0,
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Area
+              type="monotone"
+              dataKey="uv"
+              stroke="#8884d8"
+              fill="#8884d8"
+            />
+          </AreaChart>
         </ResponsiveContainer>
       </div>
     </>
