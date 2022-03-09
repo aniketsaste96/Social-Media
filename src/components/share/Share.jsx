@@ -20,7 +20,7 @@ const Share = () => {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const desc = useRef();
   const [file, setFile] = useState(null);
-  notify();
+
   const { user } = useContext(AuthContext);
 
   const submitHandler = async (e) => {
