@@ -1,7 +1,7 @@
 //cretate reducer first
 
 const AuthReducer = (state, action) => {
-    //here we have 3 conditions so we add up in switch cases
+    //here we have conditions so we add up in switch cases
     switch (action.type) {
         case "LOGIN_START":
             return {
