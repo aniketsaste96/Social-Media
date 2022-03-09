@@ -77,7 +77,7 @@ const BarChart = () => {
             <Area
               type="monotone"
               dataKey="uv"
-              stroke="#8884d8"
+              stroke="#8884d7"
               fill="#8884d8"
             />
           </AreaChart>

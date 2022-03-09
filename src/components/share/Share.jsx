@@ -10,14 +10,17 @@ import {
 import { useContext, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // onChange={(e) => e.target.files
 //[0] add cz it takea all files we need just one
 
 const Share = () => {
+  const notify = () => toast("Successfully shared..!!");
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const desc = useRef();
   const [file, setFile] = useState(null);
-
+  notify();
   const { user } = useContext(AuthContext);
 
   const submitHandler = async (e) => {
@@ -40,7 +43,10 @@ const Share = () => {
     }
     try {
       await axios.post("/posts", newPost);
-      // window.location.reload();
+      notify();
+      setTimeout(function () {
+        window.location.reload();
+      }, 4000);
     } catch (err) {}
   };
 
@@ -113,6 +119,7 @@ const Share = () => {
           </button>
         </form>
       </div>
+      <ToastContainer className="toaster-container" />
     </div>
   );
 };
