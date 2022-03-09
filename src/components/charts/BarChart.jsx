@@ -1,6 +1,7 @@
 import React from "react";
 import "./charts.css";
 import axios from "axios";
+import Topbar from "../topbar/Topbar";
 import { Pdata, Radardata, RadarData2 } from "./chartData";
 import {
   ResponsiveContainer,
@@ -27,6 +28,7 @@ const BarChart = () => {
 
   return (
     <>
+      <Topbar />
       <div className="chart">
         <h1 className="charHeading">Active Users & Posts</h1>
         <ResponsiveContainer width="100%" aspect={3}>

@@ -37,6 +37,7 @@
   cursor: pointer;
   border-radius: 50%;
   object-fit: cover;
+  margin-right: 30px;
   /* cover whole area */
 }
 .searchBar {
@@ -63,7 +64,11 @@
 .topbarRightLink {
   display: flex;
   cursor: pointer;
+
   justify-content: space-between;
+}
+.homepage {
+  margin-right: 10px;
 }
 
 .topbarIconItem {
@@ -85,4 +90,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.logoutButton {
+  cursor: pointer;
 }

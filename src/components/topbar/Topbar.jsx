@@ -1,11 +1,17 @@
 import "./topbar.css";
 import React from "react";
+import Tooltip from "@material-ui/core/Tooltip";
 import { Search, Chat, Person, Notifications } from "@material-ui/icons";
 import { useHistory, Link } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 const Topbar = () => {
   const history = useHistory();
+  const logoutHandler = () => {
+    localStorage.removeItem("user");
+    window.location.reload();
+  };
 
   //to be sync with user logged in
   const { user } = useContext(AuthContext);
@@ -28,8 +34,12 @@ const Topbar = () => {
       </div>
       <div className="topbarRight">
         <div className="topbarRightLink">
-          <span>Home Page</span>
-          <span>Timeline</span>
+          <span className="homepage" onClick={() => history.push("/")}>
+            Home Page
+          </span>
+          <span onClick={() => history.push("/profile/:username")}>
+            Timeline
+          </span>
         </div>
       </div>
       <div className="topbarIconItem">
@@ -57,6 +67,14 @@ const Topbar = () => {
           className="topBarImg"
         />
       </Link>
+
+      <Tooltip title="Log Out">
+        <PowerSettingsNewIcon
+          className="logoutButton"
+          onClick={logoutHandler}
+          color="error"
+        />
+      </Tooltip>
     </div>
   );
 };
